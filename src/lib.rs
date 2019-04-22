@@ -31,7 +31,7 @@
 #![cfg_attr(feature = "cargo-clippy", allow(many_single_char_names))]
 #[macro_use] extern crate opaque_debug;
 #[macro_use] pub extern crate digest;
-extern crate fake_simd as simd;
+pub extern crate fake_simd as simd;
 extern crate block_buffer;
 #[cfg(feature = "std")]
 extern crate std;
@@ -50,16 +50,16 @@ const S: u32x4 = u32x4(0x6745_2301, 0xEFCD_AB89, 0x98BA_DCFE, 0x1032_5476);
 type Block = GenericArray<u8, U64>;
 
 #[derive(Copy, Clone)]
-struct Md4State {
-    s: u32x4,
+pub struct Md4State {
+    pub s: u32x4,
 }
 
 /// The MD4 hasher
 #[derive(Clone, Default)]
 pub struct Md4 {
-    length_bytes: u64,
+    pub length_bytes: u64,
     buffer: BlockBuffer<U64>,
-    state: Md4State,
+    pub state: Md4State,
 }
 
 impl Md4State {
@@ -132,7 +132,7 @@ impl Default for Md4State {
 }
 
 impl Md4 {
-    fn finalize(&mut self) {
+    pub fn finalize(&mut self) {
         let state = &mut self.state;
         let l = (self.length_bytes << 3) as u64;
         self.buffer.len64_padding::<LE, _>(l, |d| state.process_block(d))
